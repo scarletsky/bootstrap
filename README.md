@@ -25,6 +25,45 @@ Project files are also available through your favourite package manager:
 * **Bower**: `bower install angular-bootstrap`
 * **NuGet**: https://nuget.org/packages/Angular.UI.Bootstrap/
 
+### Configure your template url
+You can easily configure your own template url by using Grunt plugin `grunt-html2js`. 
+Let's have a look:
+
+Your own template url is `views/partials/ui-bootstrap-tpls/alert/alert.html`.
+
+Add "html2js" task to your Gruntfile
+```
+html2js: {
+  options: {
+    base: '.',
+    module: 'ui-templates',
+    rename: function (modulePath) {
+      var moduleName = modulePath.replace('app/views/partials/ui-bootstrap-tpls/', '').replace('.html', '');
+      return 'template' + '/' + moduleName + '.html'; 
+    }
+  },
+  main: {
+    src: ['app/views/partials/ui-bootstrap-tpls/**/*.html'],
+    dest: '.tmp/ui-templates.js'
+  }
+}
+```
+
+Make sure to load your template.js file
+`<script src="/ui-templates.js"></script>`
+
+Inject the `ui-templates` module in your `app.js`
+```
+angular.module('myApp', [
+  'ui.bootstrap',
+  'ui-templates'
+]);
+```
+
+Then it will work fine!
+
+More information, visit: https://github.com/karlgoldstein/grunt-html2js
+
 ## Supported browsers
 
 Directives from this repository are automatically tested with the following browsers:
